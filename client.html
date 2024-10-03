@@ -110,29 +110,40 @@
         }
 
         // Poll the bucket every 10 seconds
+        pollBucket();
         setInterval(pollBucket, 10000);
 
         // Function to add image and description
         function addImage(url, desc) {
             if (url && desc) {
-                var container = document.getElementById('imageList');
-                var item = document.createElement('div');
-                item.className = 'item';
+                const descLines = desc.split('\n');
+                const name = descLines[0];
+                const description = descLines.slice(1).join('\n');
 
+                var container = document.getElementById('imageList');
+                var itemContainer = document.createElement('div');
+                var item = document.createElement('div');
+                item.className = 'item-details';
+
+                var nameElement = document.createElement('h3');
+                nameElement.textContent = name;
+                
                 var img = document.createElement('img');
                 img.src = url;
                 img.alt = 'Image';
                 img.onclick = function () {
                     openModal(url, desc);
                 };
-
-                var description = document.createElement('pre');
-                description.className = 'item-description';
-                description.textContent = desc;
-
+                
+                var descriptionElement = document.createElement('pre');
+                descriptionElement.className = 'item-description';
+                descriptionElement.textContent = description;
+                
+                itemContainer.appendChild(nameElement);
                 item.appendChild(img);
-                item.appendChild(description);
-                container.appendChild(item);
+                item.appendChild(descriptionElement);
+                itemContainer.appendChild(item);
+                container.appendChild(itemContainer);
             } else {
                 console.log('Please enter both image URL and description.');
             }
@@ -167,8 +178,13 @@
         /* Change to column to allow full-width items */
         justify-content: flex-start;
     }
-
     .item {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .item-details {
         width: 100%;
         /* Full width */
         border: 1px solid #ddd;
@@ -176,10 +192,10 @@
         /* Vertical margin only */
         padding: 15px;
         display: flex;
-        align-items: center;
+        align-items: start;
     }
 
-    .item img {
+    .item-details img {
         width: 50%;
         /* Image takes half of the item's width */
         height: auto;

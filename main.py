@@ -3,7 +3,7 @@ import pyautogui
 import boto3
 import ocr
 
-
+name= "abdallah"
 files_dir = "files"    
 
 class S3Client:
@@ -50,6 +50,8 @@ while True:
     
     print("Getting text from image...")
     text = ocr.read_image(image_path)
+    text = f'{name} \n {text}'
+    
     ocr.save_to_txt(text, txt_path)
     
     print("Uploading image file ...")
